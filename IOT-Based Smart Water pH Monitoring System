@@ -1,0 +1,49 @@
+int sensorPin = A0;
+
+int greenLED = 8;
+int blueLED = 9;
+int redLED = 10;
+
+float pHValue = 0;
+
+void setup() {
+
+  Serial.begin(9600);
+
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
+}
+
+void loop() {
+
+  int sensorValue = analogRead(sensorPin);
+
+  // Convert analog value into pH range
+  pHValue = map(sensorValue, 0, 1023, 0, 14);
+
+  Serial.print("pH Value: ");
+  Serial.println(pHValue);
+
+  // Turn OFF all LEDs
+  digitalWrite(greenLED, LOW);
+  digitalWrite(blueLED, LOW);
+  digitalWrite(redLED, LOW);
+
+  // Acidic
+  if (pHValue < 7) {
+    digitalWrite(blueLED, HIGH);
+  }
+
+  // Neutral
+  else if (pHValue == 7) {
+    digitalWrite(greenLED, HIGH);
+  }
+
+  // Basic
+  else {
+    digitalWrite(redLED, HIGH);
+  }
+
+  delay(1000);
+}
